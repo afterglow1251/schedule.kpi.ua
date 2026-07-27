@@ -6,11 +6,13 @@ export const getQueryKey = () => {
   return 'timeSlots';
 };
 
+const DEFAULT_TIME_SLOTS = ['08:30:00', '10:25:00', '12:20:00', '14:15:00', '16:10:00', '18:05:00', '20:00:00'];
+
 export const useTimeSlots = () => {
   return useQuery({
     staleTime: 12 * 60 * 60 * 1000,
     queryKey: getQueryKey(),
-    placeholderData: [],
+    placeholderData: DEFAULT_TIME_SLOTS,
     queryFn: async () => {
       const timeSlots = await getTimeSlots();
 

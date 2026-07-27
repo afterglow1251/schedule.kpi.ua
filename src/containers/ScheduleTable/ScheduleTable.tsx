@@ -62,7 +62,7 @@ const ScheduleTable = <T extends Pair>({
     });
   };
 
-  if (!timeSlots?.length || !currentTime) {
+  if (!timeSlots?.length) {
     return null;
   }
 
@@ -71,7 +71,7 @@ const ScheduleTable = <T extends Pair>({
   const scheduleMatrix = generateScheduleMatrix<T>(
     weekSchedule,
     timeSlots,
-    isCurrentWeekSelected ? currentTime.currentLesson : undefined,
+    isCurrentWeekSelected ? currentTime?.currentLesson : undefined,
   );
 
   return (

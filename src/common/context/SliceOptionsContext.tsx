@@ -1,5 +1,6 @@
-import { clamp, inRange, isNil, range } from 'lodash-es';
+import { clamp, range } from 'lodash-es';
 import { createContext, useContext, useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 import { ScreenSize } from '../../types/ScreenSize';
 import { useCurrentTime } from '../../queries/useCurrentTime';
@@ -12,18 +13,17 @@ export interface SliceContext {
   setSlice: (slice: Slice) => void;
 }
 
-const defaultValue: Slice = [0, 0];
+const SliceOptionsContext = createContext<SliceContext | null>(null);
 
-const SliceOptionsContext = createContext<SliceContext>({
-  slice: defaultValue,
-  setSlice: () => ({}),
-});
+export const useSliceOptionsContext = (): SliceContext => {
+  const context = useContext(SliceOptionsContext);
 
-export const useSliceOptionsContext = () => useContext(SliceOptionsContext);
+  if (!context) {
+    throw new Error('useSliceOptionsContext must be used within SliceContextProvider');
+  }
 
-interface SliceContextProviderProps {
-  children: React.ReactNode | React.ReactNode[];
-}
+  return context;
+};
 
 const DAYS_COUNT = 6;
 
@@ -35,33 +35,30 @@ const ScreenSizeSlicesCount: Record<ScreenSize, number> = {
 };
 
 const generateSlices = (screenSize: ScreenSize): Slice[] => {
-  const numberOfSlices = ScreenSizeSlicesCount[screenSize];
-  const sliceRange = DAYS_COUNT / numberOfSlices;
+  const slicesCount = ScreenSizeSlicesCount[screenSize];
+  const sliceSize = DAYS_COUNT / slicesCount;
 
-  return range(0, numberOfSlices).map((index) => [sliceRange * index + 1, sliceRange * index + sliceRange]);
+  return range(0, slicesCount).map((index) => [sliceSize * index + 1, sliceSize * (index + 1)]);
 };
 
-const getCurrentSlice = (screenSize: ScreenSize, currendDay: number): Slice => {
-  const slices = generateSlices(screenSize);
+const getCurrentSlice = (screenSize: ScreenSize, currentDay: number): Slice => {
+  const day = clamp(currentDay, 1, DAYS_COUNT);
 
-  return slices.find(([start, end]) => inRange(clamp(currendDay, 1, DAYS_COUNT), start, end + 1)) || defaultValue;
+  return generateSlices(screenSize).find(([start, end]) => day >= start && day <= end) ?? [1, DAYS_COUNT];
 };
+
+interface SliceContextProviderProps {
+  children: React.ReactNode;
+}
 
 export const SliceContextProvider = ({ children }: SliceContextProviderProps) => {
   const { data } = useCurrentTime();
   const { screenSize } = useScreenSize();
-  const [slice, setSlice] = useState<Slice>(defaultValue);
+  const [slice, setSlice] = useState<Slice>(() => getCurrentSlice(screenSize, dayjs().day()));
 
   useEffect(() => {
-    if (!isNil(data?.currentDay)) {
-      setSlice(getCurrentSlice(screenSize, data?.currentDay || 0));
-    }
+    setSlice(getCurrentSlice(screenSize, data?.currentDay ?? dayjs().day()));
   }, [screenSize, data?.currentDay]);
 
-  const value: SliceContext = {
-    slice,
-    setSlice,
-  };
-
-  return <SliceOptionsContext.Provider value={value}>{children}</SliceOptionsContext.Provider>;
+  return <SliceOptionsContext.Provider value={{ slice, setSlice }}>{children}</SliceOptionsContext.Provider>;
 };
