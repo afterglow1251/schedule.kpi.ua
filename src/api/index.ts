@@ -1,26 +1,10 @@
 import { BASE_URL } from '../common/constants/config';
 
-const defaultHeaders = {
-  'Content-Type': 'application/json',
-};
-
-interface FetchOptions extends RequestInit {
-  headers?: Record<string, string>;
-}
+type FetchOptions = Omit<RequestInit, 'headers'>;
 
 const fetchWrapper = async <T = unknown>(requestUrl: string, options: FetchOptions = {}): Promise<T> => {
-  const { headers = {}, ...restOptions } = options;
-
-  const requestOptions: RequestInit = {
-    ...restOptions,
-    headers: {
-      ...defaultHeaders,
-      ...headers,
-    },
-  };
-
   const url = BASE_URL + requestUrl;
-  const response = await fetch(url, requestOptions);
+  const response = await fetch(url, options);
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status} in request to ${url}`);
