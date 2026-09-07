@@ -14,8 +14,18 @@ import LecturerSchedule from '../containers/LecturerSchedule';
 import { ScheduleLayout } from '../layouts/ScheduleLayout';
 import ScheduleExams from '../containers/ScheduleExams';
 import GroupSchedule from '../containers/GroupSchedule';
+import { useInitialDataReady } from '../common/hooks/useInitialDataReady';
+import { cn } from '../common/utils/cn';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 1 } },
+});
+
+const AppShell = ({ children }: { children: React.ReactNode }) => {
+  const isReady = useInitialDataReady();
+
+  return <div className={cn('flex min-h-screen flex-col bg-white', !isReady && 'hidden')}>{children}</div>;
+};
 
 function App() {
   const location = useLocation();
@@ -42,7 +52,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col bg-white">
+      <AppShell>
         <Routes>
           <Route path="/" element={<ScheduleLayout />}>
             <Route index element={<GroupSchedule />} />
@@ -55,7 +65,7 @@ function App() {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </div>
+      </AppShell>
     </QueryClientProvider>
   );
 }

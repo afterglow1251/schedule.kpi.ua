@@ -1,7 +1,7 @@
 import Footer from '../components/Footer';
 import { Navbar } from '../containers/Navbar/Navbar';
 import ScrollToTop from '../components/ScrollToTop';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useCurrentTime } from '../queries/useCurrentTime';
 import { useWeekStore } from '../store/weekStore';
 import { Outlet } from 'react-router-dom';
@@ -12,7 +12,7 @@ export const ScheduleLayout = () => {
   const { data, isLoading } = useCurrentTime();
   const setCurrentWeek = useWeekStore((state) => state.setCurrentWeek);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isLoading && data?.currentWeek) {
       setCurrentWeek(convertServerTimeToWeek(data.currentWeek));
     }
