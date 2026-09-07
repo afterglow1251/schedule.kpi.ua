@@ -20,7 +20,7 @@ const MainSettings = () => {
   const getLinkUrl = (url: string) => {
     if (url.includes(routes.LECTURER)) {
       const savedLecturerId = lecturerId ?? getLocalStorageItem('lecturerId');
-      return savedLecturerId ? `${url}?groupId=${savedLecturerId}` : url;
+      return savedLecturerId ? `${url}?lecturerId=${savedLecturerId}` : url;
     }
 
     const savedGroupId = groupId ?? getLocalStorageItem('groupId');
