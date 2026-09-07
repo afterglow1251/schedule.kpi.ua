@@ -4,11 +4,13 @@ import ExamSchedule from '../../components/ExamSchedule';
 import { ScheduleGrid } from '../ScheduleWrapper/ScheduleWrapper';
 import { useExamsSchedule } from '../../queries/useExamsSchedle';
 import { useStore } from '../../store';
+import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
 
 const ScheduleExams = () => {
   const group = useStore((state) => state.group);
+  const groupId = useSelectedEntityId('groupId');
 
-  const { data: examsResponse } = useExamsSchedule(group?.id);
+  const { data: examsResponse } = useExamsSchedule(groupId);
 
   const exams = useMemo(
     () => examsResponse?.sort((a, b) => dayjs(a.date).unix() - dayjs(b.date).unix()),

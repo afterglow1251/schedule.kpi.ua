@@ -1,4 +1,5 @@
-import { getLocalStorageItem, setLocalStorageItem } from '../utils/parsedLocalStorage';
+import { setLocalStorageItem } from '../utils/parsedLocalStorage';
+import { useSelectedEntityId } from './useSelectedEntityId';
 import { useEffect } from 'react';
 
 import { EntityWithNameAndId } from '../../models/EntityWithNameAndId';
@@ -10,8 +11,8 @@ export const useEntitySearch = <T extends EntityWithNameAndId>(
   setValue: (value?: T) => void,
 ) => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const itemId = searchParams.get(storageKey) || getLocalStorageItem<string>(storageKey);
+  const [, setSearchParams] = useSearchParams();
+  const itemId = useSelectedEntityId(storageKey);
 
   useEffect(() => {
     if (!itemId) {

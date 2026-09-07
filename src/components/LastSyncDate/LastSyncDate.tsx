@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { useLastSyncDate } from '../../queries/useLastSyncDate';
-import { useStore } from '../../store';
+import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
 
 export const LastSyncDate = () => {
-  const group = useStore((state) => state.group);
-  const { data, isLoading } = useLastSyncDate(group?.id);
+  const groupId = useSelectedEntityId('groupId');
+  const { data, isLoading } = useLastSyncDate(groupId);
 
   const renderValue = () => {
     if (isLoading) {

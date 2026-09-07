@@ -1,12 +1,12 @@
 import ScheduleWrapper, { ScheduleGrid } from '../ScheduleWrapper/ScheduleWrapper';
 import { useStudentSchedule } from '../../queries/useStudentSchedule';
-import { useStore } from '../../store';
+import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
 import StudentScheduleItem from '../ScheduleItem/StudentScheduleItem';
 import StudentScheduleItemExtended from '../ScheduleItemExtended/StudentScheduleItemExtended';
 
 export const GroupSchedule = () => {
-  const group = useStore((state) => state.group);
-  const { data } = useStudentSchedule(group?.id);
+  const groupId = useSelectedEntityId('groupId');
+  const { data } = useStudentSchedule(groupId);
 
   return (
     <ScheduleGrid>
