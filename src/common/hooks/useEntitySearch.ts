@@ -4,9 +4,10 @@ import { useEffect } from 'react';
 
 import { EntityWithNameAndId } from '../../models/EntityWithNameAndId';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { EntityKey } from '../constants/entityKeys';
 
 export const useEntitySearch = <T extends EntityWithNameAndId>(
-  storageKey: string,
+  storageKey: EntityKey,
   items: T[],
   setValue: (value?: T) => void,
 ) => {

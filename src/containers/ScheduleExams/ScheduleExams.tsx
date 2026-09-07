@@ -5,10 +5,11 @@ import { ScheduleGrid } from '../ScheduleWrapper/ScheduleWrapper';
 import { useExamsSchedule } from '../../queries/useExamsSchedle';
 import { useStore } from '../../store';
 import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 const ScheduleExams = () => {
   const group = useStore((state) => state.group);
-  const groupId = useSelectedEntityId('groupId');
+  const groupId = useSelectedEntityId(ENTITY_KEYS.groupId);
 
   const { data: examsResponse } = useExamsSchedule(groupId);
 

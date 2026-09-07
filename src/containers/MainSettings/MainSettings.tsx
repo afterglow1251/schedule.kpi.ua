@@ -6,6 +6,7 @@ import { routes } from '../../common/constants/routes';
 import { getLocalStorageItem } from '../../common/utils/parsedLocalStorage';
 import { useStore } from '../../store';
 import { cn } from '../../common/utils/cn';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 const scheduleLinks = [
   { value: routes.INDEX, label: 'Розклад занять' },
@@ -19,12 +20,12 @@ const MainSettings = () => {
 
   const getLinkUrl = (url: string) => {
     if (url.includes(routes.LECTURER)) {
-      const savedLecturerId = lecturerId ?? getLocalStorageItem('lecturerId');
-      return savedLecturerId ? `${url}?lecturerId=${savedLecturerId}` : url;
+      const savedLecturerId = lecturerId ?? getLocalStorageItem(ENTITY_KEYS.lecturerId);
+      return savedLecturerId ? `${url}?${ENTITY_KEYS.lecturerId}=${savedLecturerId}` : url;
     }
 
-    const savedGroupId = groupId ?? getLocalStorageItem('groupId');
-    return savedGroupId ? `${url}?groupId=${savedGroupId}` : url;
+    const savedGroupId = groupId ?? getLocalStorageItem(ENTITY_KEYS.groupId);
+    return savedGroupId ? `${url}?${ENTITY_KEYS.groupId}=${savedGroupId}` : url;
   };
 
   return (

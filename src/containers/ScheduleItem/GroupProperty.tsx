@@ -6,6 +6,7 @@ import { Group } from '../../models/Group';
 import React from 'react';
 import ThreeUsersIcon from '../../assets/icons/users-three.svg?react';
 import { Link } from 'react-router-dom';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 interface Props {
   groups: Group[];
@@ -16,7 +17,7 @@ const GroupProperty = ({ groups }: Props) => {
 
   const handleGroupClick = (group: Group) => {
     return () => {
-      setLocalStorageItem('groupId', group.id);
+      setLocalStorageItem(ENTITY_KEYS.groupId, group.id);
       setGroup(group);
     };
   };
@@ -26,7 +27,7 @@ const GroupProperty = ({ groups }: Props) => {
       return '#';
     }
 
-    return `${routes.INDEX}?groupId=${groupId}`;
+    return `${routes.INDEX}?${ENTITY_KEYS.groupId}=${groupId}`;
   };
 
   return (

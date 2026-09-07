@@ -5,6 +5,7 @@ import { EntityWithNameAndId } from '../../models/EntityWithNameAndId';
 import { useStore } from '../../store';
 import { routes } from '../../common/constants/routes';
 import { Link } from 'react-router-dom';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 interface Props {
   lecturer: EntityWithNameAndId;
@@ -14,7 +15,7 @@ const LecturerProperty = ({ lecturer }: Props) => {
   const setLecturer = useStore((store) => store.setLecturer);
 
   const handleLecturerClick = () => {
-    setLocalStorageItem('lecturerId', lecturer.id);
+    setLocalStorageItem(ENTITY_KEYS.lecturerId, lecturer.id);
     setLecturer(lecturer);
   };
 
@@ -24,7 +25,7 @@ const LecturerProperty = ({ lecturer }: Props) => {
       <Link
         className="text-primary-font"
         onClick={handleLecturerClick}
-        to={routes.LECTURER + `?lecturerId=${lecturer.id}`}
+        to={`${routes.LECTURER}?${ENTITY_KEYS.lecturerId}=${lecturer.id}`}
       >
         {lecturer.name}
       </Link>

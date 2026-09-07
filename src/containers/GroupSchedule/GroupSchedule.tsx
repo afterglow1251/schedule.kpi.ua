@@ -3,9 +3,10 @@ import { useStudentSchedule } from '../../queries/useStudentSchedule';
 import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
 import StudentScheduleItem from '../ScheduleItem/StudentScheduleItem';
 import StudentScheduleItemExtended from '../ScheduleItemExtended/StudentScheduleItemExtended';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 export const GroupSchedule = () => {
-  const groupId = useSelectedEntityId('groupId');
+  const groupId = useSelectedEntityId(ENTITY_KEYS.groupId);
   const { data } = useStudentSchedule(groupId);
 
   return (

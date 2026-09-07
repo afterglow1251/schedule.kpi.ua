@@ -5,13 +5,14 @@ import { useLecturerSchedule } from '../../queries/useLecturerSchedule';
 import { useStore } from '../../store';
 import { useEntitySearch } from '../../common/hooks/useEntitySearch';
 import { usePreloadedList } from '../../common/hooks/usePreloadedList';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 const LecturerSearch = () => {
   const { lecturers } = usePreloadedList();
   const lecturer = useStore((state) => state.lecturer);
   const setLecturer = useStore((state) => state.setLecturer);
 
-  const { handleChange } = useEntitySearch('lecturerId', lecturers, setLecturer);
+  const { handleChange } = useEntitySearch(ENTITY_KEYS.lecturerId, lecturers, setLecturer);
 
   const { data: lecturerLessonsResponse, isLoading } = useLecturerSchedule(lecturer?.id);
 

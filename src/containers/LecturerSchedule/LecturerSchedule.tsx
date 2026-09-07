@@ -3,9 +3,10 @@ import { useLecturerSchedule } from '../../queries/useLecturerSchedule';
 import { useSelectedEntityId } from '../../common/hooks/useSelectedEntityId';
 import LecturerScheduleItem from '../ScheduleItem/LecturerScheduleItem';
 import LecturerScheduleItemExtended from '../ScheduleItemExtended/LecturerScheduleItemExtended';
+import { ENTITY_KEYS } from '../../common/constants/entityKeys';
 
 export const LecturerSchedule = () => {
-  const lecturerId = useSelectedEntityId('lecturerId');
+  const lecturerId = useSelectedEntityId(ENTITY_KEYS.lecturerId);
   const { data } = useLecturerSchedule(lecturerId);
 
   return (
