@@ -9,6 +9,7 @@ export const useExamsSchedule = (groupId?: string) => {
   return useQuery({
     queryKey: getQueryKey(groupId),
     queryFn: () => (groupId ? getExamsByGroup(groupId) : undefined),
+    keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
 };
